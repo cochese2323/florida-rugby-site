@@ -127,7 +127,7 @@ export function HomePage() {
           <SectionHeader
             eyebrow="Why Join"
             title="More Than Networking. It's Community."
-            subtitle="Membership in the Florida Rugby Chamber means business connections rooted in a shared passion for the game."
+            subtitle="This past year, a student-athlete and president of the university rugby club, who happened to have an internship at NASA had trouble finding a job upon graduation. Previously, there was no mechanism for the rugby community to help someone like that. Now, there is. Membership in the Florida Rugby Chamber means business connections rooted in a shared passion for the game."
           />
 
           <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
