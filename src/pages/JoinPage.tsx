@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Trophy, CheckCircle2, AlertCircle, ArrowRight, Star } from 'lucide-react';
+import { Trophy, CheckCircle2, AlertCircle, ArrowRight, Star } from '../lib/icons';
 import { supabase } from '../lib/supabase';
 import { useFoundingMemberCount } from '../lib/useFoundingMembers';
 import { FLORIDA_CLUBS, BUSINESS_CATEGORIES, FOUNDING_MEMBER_LIMIT } from '../lib/types';

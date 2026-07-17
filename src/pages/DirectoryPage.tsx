@@ -1,9 +1,131 @@
-import { useState } from 'react';
-import { Lock, Shield, AlertCircle, ArrowRight, Table, Loader2 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Lock, Shield, AlertCircle, ArrowRight, Table, Loader2, RefreshCw } from '../lib/icons';
 import { supabase } from '../lib/supabase';
 import { navigate } from '../lib/router';
 
-const GOOGLE_SHEET_EMBED_URL = 'https://docs.google.com/spreadsheets/d/e/YOUR_SHEET_ID/pubhtml?widget=true&headers=true';
+const CSV_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/sheet-proxy`;
+
+function parseCSV(text: string): string[][] {
+  const rows: string[][] = [];
+  let row: string[] = [];
+  let cell = '';
+  let inQuotes = false;
+
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (ch === '"') {
+      if (inQuotes && text[i + 1] === '"') { cell += '"'; i++; }
+      else { inQuotes = !inQuotes; }
+    } else if (ch === ',' && !inQuotes) {
+      row.push(cell); cell = '';
+    } else if ((ch === '\n' || ch === '\r') && !inQuotes) {
+      if (ch === '\r' && text[i + 1] === '\n') i++;
+      row.push(cell); cell = '';
+      if (row.some(c => c.trim())) rows.push(row);
+      row = [];
+    } else {
+      cell += ch;
+    }
+  }
+  if (cell || row.length) { row.push(cell); if (row.some(c => c.trim())) rows.push(row); }
+  return rows;
+}
+
+function DirectoryTable() {
+  const [rows, setRows] = useState<string[][]>([]);
+  const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState(false);
+
+  const load = async () => {
+    setLoading(true);
+    setFetchError(false);
+    try {
+      const res = await fetch(CSV_URL, {
+        headers: { Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}` },
+      });
+      if (!res.ok) throw new Error('fetch failed');
+      const text = await res.text();
+      setRows(parseCSV(text));
+    } catch {
+      setFetchError(true);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => { load(); }, []);
+
+  if (loading) {
+    return (
+      <div className="flex h-64 items-center justify-center gap-3 text-navy-500">
+        <Loader2 className="h-6 w-6 animate-spin text-teal-500" />
+        <span>Loading directory...</span>
+      </div>
+    );
+  }
+
+  if (fetchError) {
+    return (
+      <div className="flex h-64 flex-col items-center justify-center gap-4 text-center">
+        <AlertCircle className="h-10 w-10 text-coral-400" />
+        <div>
+          <p className="font-semibold text-navy-800">Could not load directory</p>
+          <p className="mt-1 text-sm text-navy-500">
+            Make sure the Google Sheet is shared as "Anyone with the link can view".
+          </p>
+        </div>
+        <button onClick={load} className="btn">
+          <RefreshCw className="h-4 w-4" />
+          Try Again
+        </button>
+      </div>
+    );
+  }
+
+  if (rows.length === 0) {
+    return (
+      <div className="flex h-32 items-center justify-center text-navy-500">
+        No entries found in the directory.
+      </div>
+    );
+  }
+
+  const [header, ...dataRows] = rows;
+  const HIDDEN_COLS = new Set(['id', 'message', 'status', 'created_at']);
+  const visibleCols = header
+    .map((col, i) => ({ col, i }))
+    .filter(({ col }) => !HIDDEN_COLS.has(col.trim().toLowerCase()));
+
+  return (
+    <div className="overflow-x-auto">
+      <table className="w-full border-collapse text-sm">
+        <thead>
+          <tr className="bg-navy-900 text-white">
+            {visibleCols.map(({ col }, pos) => (
+              <th key={col} className={`px-4 py-3 text-left font-semibold tracking-wide whitespace-nowrap${pos === 0 ? ' rounded-tl-xl' : ''}${pos === visibleCols.length - 1 ? ' rounded-tr-xl' : ''}`}>
+                {col}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {dataRows.map((row, ri) => (
+            <tr
+              key={ri}
+              className={ri % 2 === 0 ? 'bg-white hover:bg-teal-50' : 'bg-navy-50 hover:bg-teal-50'}
+            >
+              {visibleCols.map(({ col, i }) => (
+                <td key={col} className="border-b border-navy-100 px-4 py-3 text-navy-700">
+                  {row[i] ?? ''}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
 
 export function DirectoryPage() {
   const [password, setPassword] = useState('');
@@ -71,11 +193,7 @@ export function DirectoryPage() {
               </p>
             </div>
             <div className="overflow-hidden rounded-2xl border border-navy-200 shadow-lg">
-              <iframe
-                src={GOOGLE_SHEET_EMBED_URL}
-                className="h-[600px] w-full"
-                title="Florida Rugby Chamber Member Directory"
-              />
+              <DirectoryTable />
               <div className="flex items-center justify-center bg-navy-50 py-4">
                 <p className="text-sm text-navy-500">
                   Having trouble viewing the directory?{' '}

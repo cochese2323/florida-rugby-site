@@ -1,7 +1,7 @@
 import {
   Users, Handshake, Trophy, TrendingUp, ArrowRight, Calendar, MapPin,
   Shield, Sparkles, ChevronRight,
-} from 'lucide-react';
+} from '../lib/icons';
 import { navigate } from '../lib/router';
 import { useFoundingMemberCount } from '../lib/useFoundingMembers';
 import { useClubFunds } from '../lib/useClubFunds';
@@ -74,7 +74,7 @@ export function HomePage() {
                 </div>
               </div>
               <div>
-                <div className="font-display text-3xl font-bold text-coral-400">8+</div>
+                <div className="font-display text-3xl font-bold text-coral-400">{funds.length}</div>
                 <div className="mt-1 text-xs uppercase tracking-wider text-navy-300">
                   Florida Clubs
                 </div>

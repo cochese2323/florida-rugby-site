@@ -1,4 +1,4 @@
-import { Target, Eye, Heart, Users, Shield, Trophy, Handshake, Sparkles } from 'lucide-react';
+import { Target, Eye, Heart, Users, Shield, Trophy, Handshake, Sparkles } from '../lib/icons';
 import { navigate } from '../lib/router';
 import { SectionHeader } from '../components/ui';
 

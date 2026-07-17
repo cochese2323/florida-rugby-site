@@ -3,7 +3,7 @@ import {
   Lock, Users, Mail, Calendar, Trophy, CheckCircle2, XCircle, Clock,
   AlertCircle, Trash2, Plus, Minus, DollarSign, Shield, LogOut, Settings,
   Loader2, Key,
-} from 'lucide-react';
+} from '../lib/icons';
 import { supabase } from '../lib/supabase';
 import type { MembershipApplication, ContactMessage, EventRsvp, ClubFund } from '../lib/types';
 

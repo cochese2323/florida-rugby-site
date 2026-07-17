@@ -10,30 +10,30 @@ import { DirectoryPage } from './pages/DirectoryPage';
 import { ContactPage } from './pages/ContactPage';
 import { AdminPage } from './pages/AdminPage';
 
-function App() {
+export default function App() {
   const route = useRouter();
 
-  const renderPage = () => {
+  const isAdmin = route.name === 'admin';
+
+  const page = (() => {
     switch (route.name) {
-      case 'home': return <HomePage />;
-      case 'about': return <AboutPage />;
-      case 'clubs': return <ClubsPage />;
-      case 'events': return <EventsPage />;
-      case 'join': return <JoinPage />;
+      case 'home':      return <HomePage />;
+      case 'about':     return <AboutPage />;
+      case 'clubs':     return <ClubsPage />;
+      case 'events':    return <EventsPage />;
+      case 'join':      return <JoinPage />;
       case 'directory': return <DirectoryPage />;
-      case 'contact': return <ContactPage />;
-      case 'admin': return <AdminPage />;
-      default: return <HomePage />;
+      case 'contact':   return <ContactPage />;
+      case 'admin':     return <AdminPage />;
+      default:          return <HomePage />;
     }
-  };
+  })();
 
   return (
     <div className="flex min-h-screen flex-col">
-      <Header />
-      <main className="flex-1">{renderPage()}</main>
-      <Footer />
+      {!isAdmin && <Header />}
+      <main className="flex-1">{page}</main>
+      {!isAdmin && <Footer />}
     </div>
   );
 }
-
-export default App;

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Mail, MapPin, MessageSquare, CheckCircle2, AlertCircle, Send, Users } from 'lucide-react';
+import { Mail, MapPin, MessageSquare, CheckCircle2, AlertCircle, Send, Users } from '../lib/icons';
 import { supabase } from '../lib/supabase';
 import { navigate } from '../lib/router';
 

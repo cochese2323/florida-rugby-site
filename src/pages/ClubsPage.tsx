@@ -1,4 +1,4 @@
-import { Trophy, MapPin, Shield, DollarSign, TrendingUp, Award } from 'lucide-react';
+import { Trophy, MapPin, Shield, DollarSign, TrendingUp, Award } from '../lib/icons';
 import { navigate } from '../lib/router';
 import { useClubFunds } from '../lib/useClubFunds';
 import { SectionHeader, ProgressBar } from '../components/ui';

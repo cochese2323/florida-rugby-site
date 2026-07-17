@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Calendar, MapPin, Users, Clock, PartyPopper, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Calendar, MapPin, Users, Clock, PartyPopper, CheckCircle2, AlertCircle } from '../lib/icons';
 import { supabase } from '../lib/supabase';
 import { navigate } from '../lib/router';
 

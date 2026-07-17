@@ -1,4 +1,4 @@
-import { Mail, MapPin, Shield, Lock } from 'lucide-react';
+import { Mail, MapPin, Shield, Lock } from '../lib/icons';
 import { Logo } from './Logo';
 import { navigate } from '../lib/router';
 

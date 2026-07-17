@@ -1,4 +1,4 @@
-import { Trophy, Shield } from 'lucide-react';
+import { Trophy, Shield } from '../lib/icons';
 
 export function Logo({ className = 'h-10 w-auto' }: { className?: string }) {
   return (

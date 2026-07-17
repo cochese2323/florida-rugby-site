@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Menu, X, Lock } from 'lucide-react';
+import { Menu, X, Lock } from '../lib/icons';
 import { Logo } from './Logo';
 import { NavLink, navigate } from '../lib/router';
 
