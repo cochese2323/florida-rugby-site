@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useAuth } from '../context/AuthContext'
+import { navigate } from '../lib/router'
 
 export default function LoginPage() {
   const { signIn } = useAuth()
@@ -61,6 +62,10 @@ export default function LoginPage() {
             {loading ? 'Signing in...' : 'Sign In'}
           </button>
         </form>
+
+        <button onClick={() => navigate('')} style={styles.homeLink}>
+          ← Back to Homepage
+        </button>
       </div>
     </div>
   )
@@ -144,5 +149,15 @@ const styles: Record<string, React.CSSProperties> = {
     borderRadius: '8px',
     color: '#dc2626',
     fontSize: '13px',
+  },
+  homeLink: {
+    marginTop: '24px',
+    display: 'block',
+    background: 'none',
+    border: 'none',
+    color: '#6b7280',
+    fontSize: '13px',
+    cursor: 'pointer',
+    textDecoration: 'underline',
   },
 }

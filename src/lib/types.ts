@@ -73,6 +73,7 @@ export const BUSINESS_CATEGORIES = [
   'Insurance',
   'Automotive',
   'Retail',
+  'Student',
   'Other',
 ];
 

@@ -5,6 +5,7 @@ import {
   Loader2, Key,
 } from '../lib/icons';
 import { supabase } from '../lib/supabase';
+import { navigate } from '../lib/router';
 import type { MembershipApplication, ContactMessage, EventRsvp, ClubFund } from '../lib/types';
 
 type Tab = 'applications' | 'messages' | 'rsvps' | 'funds' | 'settings';
@@ -223,6 +224,12 @@ export function AdminPage() {
           <p className="mt-5 text-center text-xs text-navy-400">
             Admin access only. To request admin access, contact the chamber administrator.
           </p>
+          <button
+            onClick={() => navigate('')}
+            className="mt-4 w-full text-center text-sm text-navy-500 hover:text-teal-600 transition-colors"
+          >
+            ← Back to Homepage
+          </button>
         </div>
       </div>
     );

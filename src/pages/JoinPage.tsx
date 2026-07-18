@@ -2,11 +2,13 @@ import { useState } from 'react';
 import { Trophy, CheckCircle2, AlertCircle, ArrowRight, Star } from '../lib/icons';
 import { supabase } from '../lib/supabase';
 import { useFoundingMemberCount } from '../lib/useFoundingMembers';
-import { FLORIDA_CLUBS, BUSINESS_CATEGORIES, FOUNDING_MEMBER_LIMIT } from '../lib/types';
+import { BUSINESS_CATEGORIES, FOUNDING_MEMBER_LIMIT } from '../lib/types';
+import { useClubFunds } from '../lib/useClubFunds';
 import { navigate } from '../lib/router';
 
 export function JoinPage() {
   const { spotsRemaining, approvedCount, loading } = useFoundingMemberCount();
+  const { funds: clubs, loading: clubsLoading } = useClubFunds();
   const [form, setForm] = useState({
     full_name: '',
     email: '',
@@ -14,7 +16,7 @@ export function JoinPage() {
     business_name: '',
     business_category: '',
     city: '',
-    supported_club: 'USA Rugby (General)',
+    supported_club: '',
     message: '',
   });
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
@@ -299,15 +301,18 @@ export function JoinPage() {
                         value={form.supported_club}
                         onChange={(e) => setForm({ ...form, supported_club: e.target.value })}
                       >
-                        {FLORIDA_CLUBS.map((club) => (
-                          <option key={club.slug} value={club.name}>
-                            {club.name} {club.city !== 'Nationwide' ? `(${club.city})` : ''}
-                          </option>
-                        ))}
+                        <option value="">Select a club</option>
+                        {clubsLoading
+                          ? <option disabled>Loading clubs...</option>
+                          : clubs.map((club) => (
+                              <option key={club.id} value={club.club_name}>
+                                {club.club_name} — {club.city}
+                              </option>
+                            ))
+                        }
                       </select>
                       <p className="mt-1.5 text-xs text-navy-400">
-                        Don't have a specific club? Choose "USA Rugby (General)" to show your
-                        support for rugby nationwide with a USA Rugby emblem.
+                        Select the Florida rugby club you support or are affiliated with.
                       </p>
                     </div>
 
